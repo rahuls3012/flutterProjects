@@ -1,10 +1,15 @@
-import 'package:finger_game/models/product.dart';
+import 'package:finger_game/l10n/app_localizations.dart';
+import 'package:finger_game/pages/cartpage.dart';
+import 'package:finger_game/provider/cartprovider.dart';
 import 'package:flutter/material.dart';
-class Appbar extends StatelessWidget implements PreferredSizeWidget {
-  final VoidCallback press;
+import 'package:provider/provider.dart';
+
+class Appbar extends StatefulWidget implements PreferredSizeWidget {
+  final VoidCallback? press;
   final Color? backgroundColor;
   final Color? tColor;
   final String? title;
+  final List<Widget>? actions;
 
   final bool isSearching;
   final TextEditingController? controller;
@@ -12,11 +17,13 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onSearchPressed;
   final VoidCallback? onClosePressed;
   final IconData? icon;
+  final IconData? sicon;
 
   const Appbar({
     super.key,
-    required this.press,
+    this.press,
     this.icon,
+    this.sicon,
     this.backgroundColor,
     this.tColor,
     this.title,
@@ -25,57 +32,121 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
     this.onSearch,
     this.onSearchPressed,
     this.onClosePressed,
+    this.actions,
   });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
+  State<Appbar> createState() => _AppbarState();
+}
+
+class _AppbarState extends State<Appbar> {
+  @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
+      backgroundColor: widget.backgroundColor,
+
+     
       leading: IconButton(
-        icon:Icon(icon??Icons.arrow_back, color: tColor??Colors.black,),
-        onPressed: press,
+        icon: Icon(
+          widget.icon ?? Icons.arrow_back,
+          color: widget.tColor ?? Colors.black,
+        ),
+        onPressed: widget.press ?? (){
+          Scaffold.of(context).openDrawer();
+        },
       ),
 
-      title: !isSearching
-          ? Text(
-              title ?? "",
-              style: TextStyle(color: tColor ?? Colors.black),
-            )
-          : TextField(
-              controller: controller,
+     
+      title: widget.isSearching
+          ? TextField(
+              controller: widget.controller,
               autofocus: true,
-              onChanged: onSearch,
-             
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search),
-                ),
-                hintText: "Search...",
-                border:InputBorder.none,
+              onChanged: widget.onSearch,
+              decoration:  InputDecoration(
+                hintText:AppLocalizations.of(context)!.searchHint,
+                border: InputBorder.none,
+                prefixIcon: Icon(Icons.search),
               ),
-              style: TextStyle(color: tColor ?? Colors.black),
+              style: TextStyle(color: widget.tColor ?? Colors.black),
+            )
+          : Text(
+              widget.title ?? "",
+              style: TextStyle(color: widget.tColor ?? Colors.black,
+              fontWeight: FontWeight.bold),
             ),
 
+      
       actions: [
-        !isSearching
+       
+        widget.isSearching
             ? IconButton(
-                onPressed: onSearchPressed,
-                icon: Icon(Icons.search, color: tColor ?? Colors.black),
+                icon: Icon(Icons.close,
+                    color: widget.tColor ?? Colors.black),
+                onPressed: widget.onClosePressed,
               )
-            : IconButton(
-                onPressed: onClosePressed,
-                icon: Icon(Icons.close, color: tColor ?? Colors.black),
-              ),
+            : widget.sicon!=null?
+            IconButton(
+                icon: Icon( widget.sicon,
+                    color: widget.tColor ?? Colors.black),
+                onPressed: widget.onSearchPressed,
+              ):SizedBox.shrink(),
 
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.shopping_cart, color: tColor ?? Colors.black),
+        
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: GestureDetector(
+            onTap: () {
+          
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Cartpage()),
+              );
+            },
+            child: Stack(
+              children: [
+                Icon(
+                  Icons.shopping_cart,
+                  color: widget.tColor ?? Colors.black,
+                  size: 40,
+                ),
+
+               
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Consumer<CartProvider>(
+                    builder: (context, value, child) {
+                      if (value.cartItems.isEmpty) {
+                        return const SizedBox();
+                      }
+                      return Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red,
+                        ),
+                        child: Text(
+                          value.cartItems.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize:
+                                value.cartItems.length > 9 ? 10 : 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ],
-      backgroundColor: backgroundColor,
     );
   }
 }

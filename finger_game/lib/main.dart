@@ -1,74 +1,76 @@
-import 'package:finger_game/constraints.dart';
+import 'package:finger_game/models/orderlist.dart';
+import 'package:finger_game/models/product.dart';
 import 'package:finger_game/pages/homePage.dart';
-import 'package:finger_game/pages/pay.dart';
-import 'package:finger_game/widgets/btn.dart';
+import 'package:finger_game/provider/cartprovider.dart';
+import 'package:finger_game/provider/localeprovider.dart';
+import 'package:finger_game/provider/orderlistprovider.dart';
+import 'package:finger_game/provider/productprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:finger_game/l10n/app_localizations.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-     visualDensity: VisualDensity.adaptivePlatformDensity,
-     textTheme:TextTheme(
-      bodyLarge: TextStyle(color: kTextColor),
-      bodyMedium: TextStyle(color: kTextColor),
-     )
+// Generated localization import
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Hive initialization
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductAdapter());
+  Hive.registerAdapter(OrderListAdapter());
+  await Hive.openBox<Product>('cartbox');
+  await Hive.openBox<OrderList>('orderbox');
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context)=>Localeprovider()),
+        ChangeNotifierProvider(create: (context)=>Orderlistprovider()),
+        ChangeNotifierProvider(create: (context)=>Productprovider()),
+       
+      ],
+      child: const MyApp(),
     ),
-    home:Homepage()
-  ));
+  );
 }
 
-class MainApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("hello"), backgroundColor: Colors.amber),
-      body: Center(
-        child: MaterialButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Secondpage(),
-              ),
-            );
-          },
-            color: Colors.black,
-          child: Text("click",
-          style:TextStyle(color: Colors.amber),
-          ),
-        
-        ),
-      ),
-    );
-  }
-}
-class Secondpage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return SecondpageState();
-  }
-}
-class SecondpageState extends State<Secondpage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("secondPage", style: TextStyle(color: Colors.amber)),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-          child: MaterialButton(onPressed: (){
-            Navigator.pop(context);
-          },
-          color: Colors.amber,
-          textColor: Colors.black,
-          child: Text("Go Back"),
-          ),
-          ),
-      ),
-    );
-  }
-}
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+ 
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Localeprovider>(builder: (context, value, child) => 
+       MaterialApp(
+        debugShowCheckedModeBanner: false,
+       
+      locale: value.locale,
+      supportedLocales:AppLocalizations.supportedLocales,
+      localizationsDelegates: const[
+        AppLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate
+      ],
+      
+      
+      
+        home: Homepage(),
+      ),
+    );
+  }
+}

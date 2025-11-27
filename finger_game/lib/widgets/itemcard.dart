@@ -1,13 +1,15 @@
+
 import 'package:flutter/material.dart';
 import '../constraints.dart';
 import '../models/product.dart';
 class Itemcard extends StatelessWidget {
  final Product products;
  final VoidCallback press;
-
   const Itemcard({super.key, required this.products, required this.press});
+ 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
+  
     final  size= MediaQuery.of(context).size;
     return GestureDetector(
       onTap: press,
@@ -31,7 +33,7 @@ class Itemcard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0.1),
               child: Text(
-                products.name,
+              products.name,
                 style: TextStyle(color: kTextColor),
               ),
             ),

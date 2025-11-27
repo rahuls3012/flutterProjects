@@ -1,4 +1,5 @@
 import 'package:finger_game/constraints.dart';
+import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/models/product.dart';
 import 'package:finger_game/pages/itemDeatails.dart';
 import 'package:finger_game/widgets/category.dart';
@@ -14,9 +15,12 @@ class Homebody extends StatefulWidget {
 }
 
 class _HomebodyState extends State<Homebody> {
+  
+  
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    
+    //final size = MediaQuery.of(context).size;
     // TODO: implement build
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +29,7 @@ class _HomebodyState extends State<Homebody> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: kPadding),
           child: Text(
-            "Shopping",
+            AppLocalizations.of(context)!.appTitle,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
@@ -39,7 +43,7 @@ class _HomebodyState extends State<Homebody> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
              
-             //   childAspectRatio: 0.80,
+               childAspectRatio: 0.80,
               // mainAxisSpacing: kPadding,
               // crossAxisSpacing: kPadding,
               ),

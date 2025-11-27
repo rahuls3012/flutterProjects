@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "appTitle": "Shopping",
+  "home": "Home",
+  "settings": "Settings",
+  "language": "Language",
+  "cart": "Cart",
+  "searchHint": "Search...",
+  "buynow":"Buy Now",
+  "drawertitle":"Menu",
+  "language":"Language",
+  "about":"About",
+  "price":"Price",
+  "addtocart":"Add to Cart",
+  "total":"Total",
+  "english":"English",
+  "arabic":"العربية",
+  "all": "All",
+  "women": "Women",
+  "men": "Men",
+  "shoes": "Shoes",
+  "clothes": "Clothes",
+  "electronics": "Electronics",
+  "proceedtocheckout":"Proceed to Checkout",
+  "cartsnackbox":"Item added to your cart",
+  "product":"Product",
+  "itemcount":"ItemCount",
+  "checkout":"Checkout",
+  "ordersummary":"Order Summary",
+  "placeorder":"Place Order",
+  "noitems":"No items in your cart",
+  "shopnow":"Shop Now",
+  "order":"Order",
+  "myorders":"My Orders",
+  "payment":"Payment",
+  "selectpay":"Select Payment Method",
+  "cod":"Cash on Delivery",
+  "onlinepay":"Online Payment"
+
+ 
+
+
+
+}

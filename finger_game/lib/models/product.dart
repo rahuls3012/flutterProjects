@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
-class Product {
-  final String name,title;
+import 'package:hive/hive.dart';
+part 'product.g.dart';
+
+@HiveType(typeId: 0)
+class Product extends HiveObject {
+  @HiveField(0)
+  final String name;
+  @HiveField(1)
+  final String title;
+  @HiveField(2)
   final String description;
-  final int  price,id;
+  @HiveField(3)
+  final int  price;
+  @HiveField(4)
+  final int id;
+  @HiveField(5)
   final String image;
-  final Color color;
+  @HiveField(6)
+  final int colorvalue;
+  Color get color=>Color(colorvalue);
+  @HiveField(7)
+  int  quantity;
+  @HiveField(8)
+  final List<String> category;
 
   Product({
     required this.name,
     required this.description,
     required this.price,
     required this.image,
-    required this.color,
+    required this.colorvalue,
     required this.id,
     required this.title,
+    required this.category,
+    this.quantity=0
   });
 }
 List<Product> products = [
@@ -24,7 +44,9 @@ List<Product> products = [
     description: "Comfortable running shoes with breathable mesh.",
     price: 120,
     image:"assets/images/sneaker.png",
-    color: Colors.blueAccent,
+    colorvalue: Colors.blue.toARGB32(),
+    category: ['shoes','sports','men']
+    
   ),
   Product(
     id: 2,
@@ -33,7 +55,8 @@ List<Product> products = [
     description: "Latest smartphone with AMOLED display and 5G support.",
     price: 999,
     image: "assets/images/phone.png",
-    color: Colors.black,
+    colorvalue: Colors.black.toARGB32(),
+    category: ['electronics','mobile','gadgets']
   ),
   Product(
     id: 3,
@@ -42,7 +65,8 @@ List<Product> products = [
     description: "Lightweight laptop with powerful performance.",
     price: 1500,
     image: "assets/images/laptop_.png",
-    color: Colors.grey,
+    colorvalue: Colors.grey.toARGB32(),
+    category: ['electronics','computers','gadgets']
   ),
   Product(
     id: 4,
@@ -51,7 +75,8 @@ List<Product> products = [
     description: "Wireless headphones with active noise cancellation.",
     price: 250,
     image: "assets/images/headphones.png",
-    color: Colors.redAccent,
+    colorvalue: Colors.redAccent.toARGB32(),
+    category: ['electronics','audio','gadgets']
   ),
   Product(
     id: 5,
@@ -60,7 +85,8 @@ List<Product> products = [
     description: "Fitness tracking smartwatch with heart rate monitor.",
     price: 199,
     image: "assets/images/watches.png",
-    color: Colors.green,
+    colorvalue: Colors.green.toARGB32(),
+    category: ['electronics','wearables','gadgets']
   ),
   Product(
     id: 6,
@@ -69,7 +95,8 @@ List<Product> products = [
     description: "Durable backpack with multiple compartments.",
     price: 80,
     image: "assets/images/Backpack.png",
-    color: Colors.brown,
+    colorvalue: Colors.brown.toARGB32(),
+    category: ['accessories','travel','bags']
   ),
   Product(
     id: 7,
@@ -78,7 +105,8 @@ List<Product> products = [
     description: "Professional DSLR camera with 24MP sensor.",
     price: 1200,
     image: "assets/images/DSLR-Camera-PNG.png",
-    color: Colors.deepPurple,
+    colorvalue: Colors.deepPurple.toARGB32(),
+    category: ['electronics','photography','gadgets']
   ),
   Product(
     id: 8,
@@ -87,7 +115,8 @@ List<Product> products = [
     description: "High-resolution tablet for work and play.",
     price: 600,
     image: "assets/images/laptop_.png",
-    color: Colors.orange,
+    colorvalue: Colors.orange.toARGB32(),
+    category: ['electronics','mobile','gadgets']
   ),
   Product(
     id: 9,
@@ -96,7 +125,8 @@ List<Product> products = [
     description: "Next-gen gaming console with 4K support.",
     price: 499,
     image: "assets/images/sony_playstation.png",
-    color: Colors.indigo,
+    colorvalue: Colors.indigo.toARGB32(),
+    category: ['electronics','gaming','gadgets']
   ),
   Product(
     id: 10,
@@ -105,6 +135,17 @@ List<Product> products = [
     description: "Warm and stylish jacket for cold weather.",
     price: 150,
     image: "assets/images/jacket.png",
-    color: Colors.teal,
+    colorvalue: Colors.teal.toARGB32(),
+    category: ['clothes','men','women']
+  ),
+  Product(
+    id:11,
+    price: 200,
+    name: "Perfume",
+    title: "New Deo",
+    description: "pefume that lasts all day long.this fragrance combines fresh citrus top notes with a warm, woody base, creating an irresistible scent perfect for any occasionthe sleek bottle design reflects the modern and sophisticated nature of the fragrance inside",
+    image: "assets/images/perfume1.jpg",
+    colorvalue: Colors.cyan.toARGB32(),
+    category: ['accessories','fragrances','men']
   ),
 ];
