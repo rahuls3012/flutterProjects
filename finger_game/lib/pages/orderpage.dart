@@ -1,11 +1,14 @@
 import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/models/orderlist.dart';
 import 'package:finger_game/models/product.dart';
+import 'package:finger_game/provider/localeprovider.dart';
 import 'package:finger_game/provider/orderlistprovider.dart';
 import 'package:finger_game/widgets/Appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:finger_game/provider/translate.dart';
 class OrderPage extends StatelessWidget {
   const OrderPage({super.key});
 
@@ -26,10 +29,10 @@ class OrderPage extends StatelessWidget {
               
               return Container(
 
-                margin: EdgeInsets.all(4),
+                margin: EdgeInsets.all(4.sp),
                  decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.sp),
                   border: Border.all(color: Colors.black)
                  ),
                 child: ExpansionTile(
@@ -39,9 +42,9 @@ class OrderPage extends StatelessWidget {
                 title:Text('${AppLocalizations.of(context)!.order} ${index+1}:') ,
                 subtitle:Text('ID :${orderitem.orderId}'),
                 trailing: SizedBox(
-                  width: 180,
+                  width: 180.sp,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(top: 15.sp),
                     child: Row(
                      crossAxisAlignment: CrossAxisAlignment.end,
                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,9 +75,13 @@ class OrderPage extends StatelessWidget {
                       return ListTile(
                        
                         leading: Text('${pindex+1}'),
-                        title:Text(orderedProduct.name),
+                        title:Consumer<Localeprovider>(builder: (context, localeProvider, child)=>
+                         Text(
+                          ProductTranslationHelper.getTranslatedName(orderedProduct, localeProvider.currentLanguageCode),
+                         )
+                        ),
                         trailing: SizedBox(
-                          width: 150,
+                          width: 150.sp,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [Text(orderedProduct.quantity.toString()),

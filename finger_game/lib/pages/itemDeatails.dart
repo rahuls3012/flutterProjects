@@ -3,9 +3,13 @@ import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/models/product.dart';
 import 'package:finger_game/pages/checkoutpage.dart';
 import 'package:finger_game/provider/cartprovider.dart';
+import 'package:finger_game/provider/localeprovider.dart';
 import 'package:finger_game/widgets/Appbar.dart';
+import 'package:finger_game/widgets/homeBody.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:finger_game/provider/translate.dart';
 
 class ItemDetails extends StatefulWidget {
   final Product product;
@@ -52,18 +56,23 @@ class _ItemDetailsState extends State<ItemDetails> {
                       ),
                     ),
                   ),
-                  Consumer<CartProvider>(
-                    builder: (context, value, child) => Column(
+                  Consumer2<CartProvider,Localeprovider>(
+                    builder: (context, value, localeProvider, child){
+                       final lang = localeProvider.currentLanguageCode;
+                      // Ensure product is translated
+        
+
+                      return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(kPadding),
 
                           child: Text(
-                            widget.product.name,
+                            widget.product.translatedName?[lang] ?? widget.product.name,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 30,
+                              fontSize:25,
                               color: Colors.white,
                             ),
                           ),
@@ -107,33 +116,30 @@ class _ItemDetailsState extends State<ItemDetails> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(kPadding),
-                          child: SizedBox(
-                            height: height * 0.3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.product.title,
-                                  style: TextStyle(
-                                    fontSize: width * 0.07,
-                                    fontWeight: FontWeight.bold,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                               widget.product.translatedTitle?[lang] ?? widget.product.title,
+                                style: TextStyle(
+                                  fontSize: width * 0.07,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: kPadding / 2),
+                              Text(
+                                widget.product.translatedDescription?[lang] ?? widget.product.description,
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    96,
+                                    95,
+                                    95,
                                   ),
                                 ),
-                                SizedBox(height: kPadding / 2),
-                                Text(
-                                  widget.product.description,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: const Color.fromARGB(
-                                      255,
-                                      96,
-                                      95,
-                                      95,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         Row(
@@ -229,21 +235,23 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: Localizations.of(context, AppLocalizations)!.buynow.length>10?10:20,
                                   ),
                                 ),
                               ),
                             ),
+                          
                           ],
-                        ),
-
-                        
+                        ), 
+                         // Homebody(products: products) 
                       ],
-                    ),
+                    );}
                   ),
                 ],
               ),
             ),
+      //      Homebody(products: products)
+
           ],
         ),
       ),

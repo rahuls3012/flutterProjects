@@ -2,6 +2,8 @@ import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/pages/cartpage.dart';
 import 'package:finger_game/pages/orderpage.dart';
 import 'package:finger_game/provider/localeprovider.dart';
+import 'package:finger_game/provider/translate.dart';
+import 'package:finger_game/provider/translateprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,12 +56,21 @@ class MyAppDrawer extends StatelessWidget {
                 children: [
                   ListTile(
                    title: Text(   AppLocalizations.of(context)!.english),
-                   onTap: ()=>value.changeLoacle(Locale('en')),
+                   onTap: (){value.changeLoacle(Locale('en'));
+            
+                   },
                   ),
                   ListTile(
                     title: Text(   AppLocalizations.of(context)!.arabic),
-                    onTap: () =>value.changeLoacle(Locale('ar')),
-                  )
+                    onTap: () async{value.changeLoacle(Locale('ar'));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("Tamil"),
+                    onTap: (){value.changeLoacle(Locale('ta'));
+                   
+                    },
+                  ),
                 ],
               ),
             ),
@@ -67,7 +78,18 @@ class MyAppDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.info),
               title: Text(   AppLocalizations.of(context)!.about),
-              onTap: () {},
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationName: 'E-Commerce App',
+                  applicationVersion: '1.0.0',
+                  applicationIcon: Icon(Icons.gamepad),
+                  applicationLegalese: '© 2024 E-commerce Inc.',
+                  children: [
+                    Text('This is a sample e-commerce application built with Flutter.'),
+                  ],
+                );
+              },
             ),
           ],
         ),

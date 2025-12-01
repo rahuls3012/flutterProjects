@@ -2,8 +2,10 @@ import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/pages/checkoutpage.dart';
 import 'package:finger_game/pages/homePage.dart';
 import 'package:finger_game/provider/cartprovider.dart';
+import 'package:finger_game/provider/localeprovider.dart';
 import 'package:finger_game/widgets/Appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 class Cartpage extends StatefulWidget{
   @override
@@ -17,7 +19,7 @@ class _CartpageState extends State<Cartpage> {
     appBar: Appbar(title:AppLocalizations.of(context)!.cart,press: () {
       Navigator.pop(context);
     },),
-    body:Consumer<CartProvider>(builder: (context, value, child) => 
+    body:Consumer2<CartProvider,Localeprovider>(builder: (context, value, localeProvider, child) => 
     value.cartItems.length==0?
     Center(
       child: Column(
@@ -44,18 +46,21 @@ class _CartpageState extends State<Cartpage> {
             
            // leading: Text("img"),
             title: Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Text(AppLocalizations.of(context)!.product,style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
+              padding: EdgeInsets.only(left: 30.sp),
+              child: Text(AppLocalizations.of(context)!.product,style: TextStyle(
+                fontSize: Localizations.of(context, AppLocalizations)!.product.length>16?10.sp:15.sp,fontWeight: FontWeight.bold,color: Colors.white),),
             ),
             trailing: SizedBox(
-              width: 170,
+              width: 170.sp,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                
                 children: [
                   Text(AppLocalizations.of(context)!.price,
-                  style: TextStyle(fontSize:20,fontWeight: FontWeight.bold,color: Colors.white ),),
-                  Text(AppLocalizations.of(context)!.itemcount,style: TextStyle(fontSize:20,fontWeight: FontWeight.bold,color: Colors.white ))
+                  style: TextStyle(fontSize:12.sp,fontWeight: FontWeight.bold,color: Colors.white ),),
+                  Text(AppLocalizations.of(context)!.itemcount,style: TextStyle(
+                    fontSize:12.sp,
+                    fontWeight: FontWeight.bold,color: Colors.white ))
               
                 ],
                 
@@ -65,26 +70,32 @@ class _CartpageState extends State<Cartpage> {
           ),
            Expanded(
              child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.only(bottom: 20.sp),
               itemCount:value.cartItems.length,
               itemBuilder: (context,index)=>ListTile(
                 
                 
                 tileColor:index%2==0? const Color.fromARGB(60, 142, 192, 35):const Color.fromARGB(58, 41, 7, 143),
                leading: Container(
-                height: 50,
-                padding: EdgeInsets.all(10),
+                height: 50.sp,
+                padding: EdgeInsets.all(10.sp),
                 child: Image.asset(value.cartItems[index].image)),
-                title:Text(value.cartItems[index].name),
+                title:Text(value.cartItems[index].translatedName?[localeProvider.locale.languageCode]??value.cartItems[index].name),
               //leading: Text(value.cartItems[index].name),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text("\$"+value.cartItems[index].price.toString()),
-                    SizedBox(width: 30,),
-                    IconButton(onPressed: (){value.addCartItem(value.cartItems[index]);},icon: Icon(Icons.add),),
+                    SizedBox(width: 30.sp,),
+                    IconButton(onPressed: (){value.addCartItem(value.cartItems[index]);
+                    final t= value.cartItems[index];
+                    print(t.name+t.translatedName.toString());
+                    },
+                     icon: Icon(Icons.add)),
                     Text(value.cartItems[index].quantity.toString()),
-                    IconButton(onPressed: (){value.removeItem(value.cartItems[index]);},
+                    IconButton(onPressed: (){value.removeItem(value.cartItems[index]);
+                    
+                    },
                      icon: Icon(Icons.remove))
                   ],
                 ),
@@ -92,22 +103,22 @@ class _CartpageState extends State<Cartpage> {
                    ),
            ),
            Container(
-            height: 100,
+            height: 100.sp,
             color: Colors.white,
-             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+             padding: EdgeInsets.symmetric(horizontal: 20.sp,vertical: 10.sp),
              child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
                 Text(AppLocalizations.of(context)!.total,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20.sp,color: Colors.black),),
                  Center(child: Text("\$"+value.sumofcart().toString(),style: 
-                 TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),)),
+                 TextStyle(fontWeight: FontWeight.bold,fontSize: 20.sp,color: Colors.black),)),
                ],
              ),
              
            ),
            Padding(
-             padding: const EdgeInsets.only(top: 20,bottom: 50),
+             padding: EdgeInsets.only(top: 20.sp,bottom: 50.sp),
              child: MaterialButton(onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder:
               (context)=>Checkoutpage(product:value.cartItems,isFromcart: true,)));

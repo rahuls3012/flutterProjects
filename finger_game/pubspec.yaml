@@ -18,6 +18,8 @@ dependencies:
   hive: ^2.2.3
   lottie: ^2.7.0
   translator: 
+  shared_preferences:
+  flutter_screenutil:
 
 dev_dependencies:
   flutter_test:

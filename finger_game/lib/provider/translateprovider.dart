@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:finger_game/provider/translate.dart';
+import '../models/product.dart';
+import '../provider/translate.dart'; // contains ProductTranslationHelper
 
-class TranslationProvider with ChangeNotifier {
-  String? name;
-  String? title;
-  String? description;
+class TranslateProvider extends ChangeNotifier {
+  bool isTranslating = false;
+  final ProductTranslationHelper _translationHelper = ProductTranslationHelper();
 
-  bool isLoading = false;
-
-  Future<void> translateProduct({
-    required String originalName,
-    required String originalTitle,
-    required String originalDescription,
-    required String lang,
-  }) async {
-    if (lang != "ar") {
-      name = originalName;
-      title = originalTitle;
-      description = originalDescription;
-      notifyListeners();
-      return;
+  Future<void> translateAllProducts(List<Product> products, String langCode) async {
+    for (var product in products) {
+     
     }
-
-    isLoading = true;
-    notifyListeners();
-
-    name = await translateText(originalName, "ar");
-    title = await translateText(originalTitle, "ar");
-    description = await translateText(originalDescription, "ar");
-
-    isLoading = false;
+    isTranslating = false;
     notifyListeners();
   }
 }

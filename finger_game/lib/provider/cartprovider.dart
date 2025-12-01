@@ -17,8 +17,23 @@ Future<void>addToCart(Product product,int count)async{
     await item.save();
   }
   else{
-    product.quantity=count;
-    await _cartItems.add(product);
+   
+   Product newProduct=Product(
+      id: product.id,
+      name: product.name,
+      title: product.title,
+      colorvalue: product.colorvalue,
+      description: product.description,
+      price: product.price,
+      image: product.image,
+      quantity: count,
+      category: product.category,
+      translatedName: {...?product.translatedName},
+      translatedTitle:{...?product.translatedTitle},
+      translatedDescription: {...?product.translatedDescription},
+    );
+    await _cartItems.add(newProduct);
+    
   }
   notifyListeners();
 

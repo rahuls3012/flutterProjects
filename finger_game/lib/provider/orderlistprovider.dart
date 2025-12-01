@@ -21,6 +21,9 @@ class Orderlistprovider extends ChangeNotifier{
       image: e.image,
       quantity: e.quantity,
       category: e.category,
+      translatedName: {...?e.translatedName},
+      translatedTitle:{...?e.translatedTitle},
+      translatedDescription:{...?e.translatedDescription},
     )).toList();
    final newOrder= OrderList(
   

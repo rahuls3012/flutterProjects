@@ -1,5 +1,6 @@
 import 'package:finger_game/l10n/app_localizations.dart';
 import 'package:finger_game/models/product.dart';
+import 'package:finger_game/models/sampleproducts.dart';
 import 'package:finger_game/provider/productprovider.dart';
 import 'package:finger_game/widgets/Appbar.dart';
 import 'package:finger_game/widgets/drawer.dart';
@@ -18,7 +19,7 @@ class _HomepageState extends State<Homepage> {
    bool isSearching = false;
   TextEditingController searchController = TextEditingController();
   List<Product> searchResults = [];
-  List<Product> allProducts = products; 
+  List<Product> allProducts = sampleproducts; 
   // Assuming 'products' is your list of all product
   
   @override

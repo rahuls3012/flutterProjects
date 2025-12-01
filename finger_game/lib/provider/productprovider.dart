@@ -1,5 +1,8 @@
 import 'package:finger_game/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+final productbox = Hive.box<Product>('products');
+final products=productbox.values.toList();
 class Productprovider extends ChangeNotifier{
   List<Product> allProducts=products;
   List<Product>searchResults=products;
